@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ous.daily.model.mapper.UserMapper">
+	<resultMap type="User" id="user">
+		<result column="" property="id" />
+		<result column="" property="pass" />
+		<result column="" property="email" />
+	</resultMap>
+	<resultMap type="Cert" id="cert">
+		<result column="id" property="id" />
+		<result column="certif" property="certif" />
+	</resultMap>
+
+	<select id="existUser" parameterType="String" resultMap="user">
+		select *
+		from users
+		where id=#{id}
+	</select>
+	<update id="changeUser" parameterType="User">
+		update users
+		set
+		`password`=#{pass},
+		`email`=#{email}
+		where `id`=#{id}
+	</update>
+	<delete id="deleteUser" parameterType="String">
+		delete
+		from users
+		where
+		`id`=#{id}
+	</delete>
+	<insert id="addUser" parameterType="User">
+		insert into
+		users(`id`,`password`,`email`)
+		values(#{id},#{pass},#{email})
+	</insert>
+
+	<select id="existCert" parameterType="String" resultMap="cert">
+		select *
+		from temp_certi
+		where id=#{id}
+	</select>
+	<update id="changeCert" parameterType="Cert">
+		update temp_certi
+		set
+		`certif`=#{certif}
+		where `id`=#{id}
+	</update>
+	<delete id="deleteCert" parameterType="String">
+		delete
+		from temp_certi
+		where `id`=#{id}
+	</delete>
+	<insert id="addCert" parameterType="Cert">
+		insert into
+		temp_certi(`id`,`certif`)
+		values(#{id},#{certif})
+	</insert>
+</mapper>

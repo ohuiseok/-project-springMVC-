@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ous.daily.model.mapper.DiaryMapper">
+	<resultMap type="Diary" id="dialy">
+		<result column="no" property="no" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="year" property="year" />
+		<result column="month" property="month" />
+		<result column="day" property="day" />
+		<result column="users_id" property="userId" />
+	</resultMap>
+	<resultMap type="ImageFile" id="imageFile">
+		<result column="org_name" property="orgName" />
+		<result column="save_forder" property="saveFolder" />
+		<result column="change_name" property="changeName" />
+		<result column="diary_no" property="diaryNo" />
+	</resultMap>
+	<select id="getDiaryByMonth" parameterType="Diary"
+		resultMap="dialy">
+		select *
+		from diary
+		where `year`=#{year}
+		and `month`=#{month}
+	</select>
+	<select id="getDiaryByDay" parameterType="Diary"
+		resultMap="dialy">
+		select *
+		from diary
+		where `year`=#{year}
+		and `month`=#{month}
+		and `day`=#{day}
+	</select>
+	<update id="changeDiary" parameterType="Diary">
+		update diary
+		set
+		`title`=#{title},
+		`content`=#{content}
+		where `users_id`=#{userId}
+		and
+		`year`=#{year}
+		and `month`=#{month}
+		and `day`=#{day}
+	</update>
+	<delete id="deleteDiary" parameterType="Diary">
+		delete
+		from diary
+		where
+		`users_id`=#{userId}
+		and `year`=#{year}
+		and `month`=#{month}
+		and
+		`day`=#{day}
+	</delete>
+	<insert id="addDiary" parameterType="Diary">
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			select max(`no`) from diary;
+		</selectKey>
+		insert into
+		diary
+		(`title`,`content`,`year`,`month`,`day`,`users_id`)
+		values(#{title},#{content},#{year},#{month},#{day},#{userId})
+	</insert>
+	<select id="getFile" parameterType="Diary">
+		select *
+		from files
+		where
+		`diary_no`=#{no}
+	</select>
+	<update id="changeFile" parameterType="ImageFile">
+		update files
+		set
+		`org_name`=#{orgName},
+		`save_forder`=#{saveFolder},
+		`change_name`=#{changeName}
+		where diary_no = #{diaryNo}
+	</update>
+	<delete id="deleteFile" parameterType="String">
+		delete
+		from files
+		where
+		`diary_no`=#{diaryNo}
+	</delete>
+	<insert id="addFile" parameterType="ImageFile">
+		insert into
+		files(`org_name`,`save_forder`,`change_name`,`diary_no`)
+		values(#{orgName},'#{saveFolder},#{changeName},#{diaryNo});
+	</insert>
+</mapper>
