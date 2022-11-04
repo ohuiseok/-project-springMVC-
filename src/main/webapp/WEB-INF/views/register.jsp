@@ -76,5 +76,11 @@
 
       <div class="col-2"></div>
     </div>
+    <script>
+		const text = "${msg}";
+		if(text != null && text != "null" && text != ""){
+			alert(text);
+		}
+	</script>
   </body>
 </html>

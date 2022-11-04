@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -28,10 +30,10 @@
         &lt;
       </div>
       <div class="col-4" style="text-align: right; font-size: xx-large">
-        2022년
+        ${year}년
       </div>
       <div class="col-4" style="text-align: left; font-size: xx-large">
-        02월
+        ${month}월
       </div>
       <div class="col-2" style="text-align: center; font-size: xx-large">
         &gt;
@@ -39,89 +41,39 @@
     </div>
 
     <div class="row">
-      <div id="1" class="card bg-dark col click_event" value="empty">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-mute" style="font-size: xx-large">
-            1
-          </h6>
-          <p
-            class="card-text"
-            style="max-height: 10em; overflow-wrap: break-mod"
-          >
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.fvdzdvxvxvxxxxxxxxxxxxxxxxxxxx Some quick
-            example text to build on the card title and make up the bulk of the
-            card's content.fvdzdvxvxvxxxxxxxxxxxxxxxxxxxx Some quick example
-            text to build on the card title and make up the bulk of the card's
-            content.fvdzdvxvxvxxxxxxxxxxxxxxxxxxxx Some quick example text to
-            build on the card title and make up the bulk of the card's
-            content.fvdzdvxvxvxxxxxxxxxxxxxxxxxxxx
-          </p>
-        </div>
-      </div>
-      <div class="card col click_event">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted" style="font-size: xx-large">
-            2
-          </h6>
-          <p class="card-text"></p>
-        </div>
-      </div>
-      <div class="card col click_event">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted" style="font-size: xx-large">
-            3
-          </h6>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-        </div>
-      </div>
-      <div class="card col click_event">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted" style="font-size: xx-large">
-            4
-          </h6>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-        </div>
-      </div>
-      <div class="card col click_event">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted" style="font-size: xx-large">
-            5
-          </h6>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-        </div>
-      </div>
-      <div class="card col click_event">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted" style="font-size: xx-large">
-            6
-          </h6>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-        </div>
-      </div>
-      <div class="card bg-dark col click_event">
-        <div class="card-body">
-          <h6 class="card-subtitle mb-2 text-muted" style="font-size: xx-large">
-            7
-          </h6>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-        </div>
-      </div>
+      <c:forEach var="diary" items="${diarys}" varStatus="status" >
+      	<c:if test="${status.index % 7 == 0 || status.index % 7 == 6}">
+    		<div id="${diary.day}" class="card bg-dark col click_event" value="empty">
+        		<div class="card-body">
+         	 		<h6 class="card-subtitle mb-2 text-mute" style="font-size: xx-large">
+            			${diary.day}
+          			</h6>
+          			<p class="card-text" style="max-height: 10em; overflow-wrap: break-mod">
+          				${diary.title}
+          			</p>
+        		</div>
+      		</div>
+		</c:if>
+		<c:if test="${status.index % 7 != 0 && status.index % 7 != 6}">
+    		<div class="card col click_event">
+        		<div class="card-body">
+        			<h6 class="card-subtitle mb-2 text-muted" style="font-size: xx-large">
+           				${diary.day}
+        			</h6>
+        			<p class="card-text">${diary.title}</p>
+        		</div>
+      		</div>
+		</c:if>
+      
+      
+      </c:forEach>
+      
     </div>
+    <script>
+		const text = "${msg}";
+		if(text != null && text != "null" && text != ""){
+			alert(text);
+		}
+	</script>
   </body>
 </html>

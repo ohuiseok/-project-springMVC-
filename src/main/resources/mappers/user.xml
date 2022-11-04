@@ -4,19 +4,21 @@
 
 <mapper namespace="com.ous.daily.model.mapper.UserMapper">
 	<resultMap type="User" id="user">
-		<result column="" property="id" />
-		<result column="" property="pass" />
-		<result column="" property="email" />
+		<result column="id" property="id" />
+		<result column="password" property="pass" />
+		<result column="email" property="email" />
 	</resultMap>
 	<resultMap type="Cert" id="cert">
 		<result column="id" property="id" />
 		<result column="certif" property="certif" />
 	</resultMap>
 
-	<select id="existUser" parameterType="String" resultMap="user">
+	<select id="existUser" parameterType="string" resultMap="user">
 		select *
 		from users
-		where id=#{id}
+		<where>
+			id=#{id}
+		</where> 
 	</select>
 	<update id="changeUser" parameterType="User">
 		update users

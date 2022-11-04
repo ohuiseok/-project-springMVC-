@@ -14,29 +14,29 @@ import com.ous.daily.model.User;
 public interface DiaryMapper {
 	List<Diary> getDiaryByMonth(Diary diary) throws SQLException;// String year, String month
 
-	Diary getDiaryByDay(Diary diary) throws SQLException;;// String year, String month, String day
+	Diary getDiaryByDay(Diary diary) throws SQLException;// String year, String month, String day
 
-	void changeDiary(Diary diary) throws SQLException;;
+	void changeDiary(Diary diary) throws SQLException;
 
-	void deleteDiary(Diary diary) throws SQLException;;// String year, String month, String day
+	void deleteDiary(Diary diary) throws SQLException;// String year, String month, String day
 
-	long addDiary(Diary diary) throws SQLException;;
+	long addDiary(Diary diary) throws SQLException;
 
-	List<ImageFile> getFile(Diary diary) throws SQLException;;
+	List<ImageFile> getFile(Diary diary) throws SQLException;
 
-	void changeFile(ImageFile imageFile) throws SQLException;;
+	void changeFile(ImageFile imageFile) throws SQLException;
 
-	void deleteFile(long no) throws SQLException;;
+	void deleteFile(long no) throws SQLException;
 
-	void addFile(ImageFile imageFile) throws SQLException;;
+	void addFile(ImageFile imageFile) throws SQLException;
 
-	User existUser(String id) throws SQLException;;
+	User existUser(String id) throws SQLException;
 
-	void changeUser(User user) throws SQLException;;
+	void changeUser(User user) throws SQLException;
 
-	void deleteUser(String id) throws SQLException;;
+	void deleteUser(String id) throws SQLException;
 
-	void addUser(User user) throws SQLException;;
+	void addUser(User user) throws SQLException;
 
 	Cert existCert(String id);
 

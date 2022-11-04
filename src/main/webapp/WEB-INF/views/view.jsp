@@ -126,5 +126,11 @@
       integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
       crossorigin="anonymous"
     ></script>
+    <script>
+		const text = "${msg}";
+		if(text != null && text != "null" && text != ""){
+			alert(text);
+		}
+	</script>
   </body>
 </html>

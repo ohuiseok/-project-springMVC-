@@ -23,6 +23,7 @@
 		from diary
 		where `year`=#{year}
 		and `month`=#{month}
+		order by `day`
 	</select>
 	<select id="getDiaryByDay" parameterType="Diary"
 		resultMap="dialy">

@@ -15,7 +15,7 @@
       <div class="align-items-start" style="height: 200px"></div>
       <div class="row align-items-center">
         <div class="col-3"></div>
-        <form class="col-6"  action="${pageContext.request.contextPath}/calendar" method="Post">
+        <form class="col-6"  action="${pageContext.request.contextPath}/login" method="Post">
           <fieldset>
             <legend>로그인 화면</legend>
             <div class="form-group">
@@ -24,6 +24,7 @@
                 type="text"
                 class="form-control"
                 id="id"
+                name="id"
                 placeholder="id"
               />
             </div>
@@ -35,13 +36,14 @@
                 type="password"
                 class="form-control"
                 id="pass"
+                name="pass"
                 placeholder="pass"
               />
             </div>
             <div style="height: 30px"></div>
             <div class="row">
               <button type="submit" class="btn btn-primary col mx-4 mb-2">
-                로그인
+                	로그인
               </button>
             </div>
             <div class="row">
@@ -55,6 +57,13 @@
       </div>
       <div></div>
     </div>
+    <script>
+		const text = "${msg}";
+		console.log(text);
+		if(text != null && text != "null" && text != ""){
+			alert(text);
+		}
+	</script>
     <script type="text/javascript"> 
     document.getElementById("join").addEventListener("click",function() {
     	location.href="${pageContext.request.contextPath}/join"
