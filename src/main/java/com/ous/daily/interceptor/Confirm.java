@@ -9,14 +9,14 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class Confirm implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
-        HttpSession session = request.getSession();
-        Object obj = session.getAttribute("login");
-          
-        if ( obj == null ){
-            response.sendRedirect(request.getContextPath());
-            return false; 
-        }
-          
-        return true;
+		HttpSession session = request.getSession();
+		Object obj = session.getAttribute("login");
+
+		if (obj == null) {
+			response.sendRedirect(request.getContextPath());
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -20,7 +20,7 @@ import com.ous.daily.model.service.DailyService;
 
 @Controller
 public class DailyController {
-
+ 
 //	JavaMailSender mailSender;
 //	
 //	@Autowired
@@ -67,7 +67,7 @@ public class DailyController {
 	}
 
 	@GetMapping("/join")
-	String join(User user) {
+	String join() {
 
 		return "join";
 	}
@@ -95,7 +95,7 @@ public class DailyController {
 		Diary diary = new Diary();
 		List<Diary> viewDiarys = new ArrayList<Diary>();
 		Calendar cal = Calendar.getInstance();
-		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK)-(cal.get(Calendar.DATE 	)%7)+1;
 		diary.setYear(cal.get(Calendar.YEAR));
 		diary.setMonth(cal.get(Calendar.MONTH)+1);
 		
@@ -108,7 +108,7 @@ public class DailyController {
 			int cnt=1;
 			List<Diary> diarys = dailyService.getDiaryByMonth(diary);
 			for(Diary d : diarys) {
-				if(cnt!= d.getDay()) {
+				if(cnt== d.getDay()) {
 					viewDiarys.add(d);
 					cnt++;
 				}else {
@@ -128,6 +128,11 @@ public class DailyController {
 				viewDiarys.add(empty);
 				cnt++;
 			}
+			while(viewDiarys.size()%7!=0) {
+				Diary empty = new Diary();
+				empty.setDay(0);
+				viewDiarys.add(empty);
+			}
 			model.addAttribute("year",cal.get(Calendar.YEAR));
 			model.addAttribute("month",cal.get(Calendar.MONTH)+1);
 			model.addAttribute("diarys",viewDiarys);
@@ -142,7 +147,7 @@ public class DailyController {
 
 	@PostMapping("/calendar")
 	String postCalendar() {
-
+		
 		return "join";
 	}
 
