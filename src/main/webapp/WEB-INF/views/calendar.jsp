@@ -16,7 +16,7 @@
   </head>
   <body>
     <ol class="breadcrumb">
-      <a href="http://naver.com"
+      <a href="${pageContext.request.contextPath}/calendar"
         ><li class="breadcrumb-item active" style="font-size: xx-large">
           Home
         </li>

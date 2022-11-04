@@ -13,7 +13,7 @@
   <body>
   
     <ol class="breadcrumb">
-      <a href="http://naver.com" style="text-decoration-line: none"
+      <a href="${pageContext.request.contextPath}/calendar" style="text-decoration-line: none"
         ><li class="breadcrumb-item active" style="font-size: xx-large">
           Home
         </li>
