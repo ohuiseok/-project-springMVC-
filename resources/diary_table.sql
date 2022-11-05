@@ -19,7 +19,7 @@ USE `daily_diary` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `daily_diary`.`users` (
   `id` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NULL DEFAULT NULL,
+  `password` VARCHAR(200) NULL DEFAULT NULL,
   `email` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `daily_diary`.`diary` (
     FOREIGN KEY (`users_id`)
     REFERENCES `daily_diary`.`users` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 14
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -50,9 +51,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- Table `daily_diary`.`files`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `daily_diary`.`files` (
-  `org_name` VARCHAR(100) NULL DEFAULT NULL,
-  `save_forder` VARCHAR(45) NULL DEFAULT NULL,
-  `change_name` VARCHAR(100) NULL DEFAULT NULL,
+  `org_name` VARCHAR(200) NULL DEFAULT NULL,
+  `save_forder` VARCHAR(200) NULL DEFAULT NULL,
+  `change_name` VARCHAR(200) NULL DEFAULT NULL,
   `diary_no` INT NOT NULL,
   INDEX `fk_files_diary1_idx` (`diary_no` ASC) VISIBLE,
   CONSTRAINT `fk_files_diary1`
@@ -67,9 +68,10 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `daily_diary`.`temp_certi` (
   `id` VARCHAR(45) NOT NULL,
-  `certif` VARCHAR(100) NULL,
+  `certif` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

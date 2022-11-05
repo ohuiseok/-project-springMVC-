@@ -31,7 +31,7 @@
         enctype="multipart/form-data"
       >
         <fieldset>
-          <legend>일기장</legend>
+          <legend>${daily.year}.${daily.month}.${daily.day} 일기장</legend>
           <div class="form-group">
             <label
               class="col-form-label col-form-label-lg mt-4"
@@ -44,40 +44,41 @@
               placeholder="title"
               id="inputLarge"
               readonly
+              value="${daily.title}"
             />
           </div>
           <div class="form-group">
             <label for="exampleTextarea" class="form-label mt-4"
               >일기 내용</label
             >
-
+		
+		<c:if test="${!empty files }">
             <div
               id="carouselExampleControls"
               class="carousel slide px-1 py-1"
               data-bs-ride="carousel"
             >
               <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img
-                    src="resources/image/sample_images_01.png"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="resources/image/sample_images_02.png"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="resources/image/sample_images_03.png"
-                    class="d-block w-100"
-                    alt="..."
-                  />
-                </div>
+              	<c:forEach var="file" items="${files}" varStatus="status" > 
+                	<c:if test="${status.index == 0 }">
+                		<div class="carousel-item active">
+                  		<img
+                  		  src="${pageContext.request.contextPath}/show?filePath=${file.saveFolder}&fileName=${file.changeName}"
+                  		  class="d-block w-100"
+                  		  alt="..."
+                  		/>
+                		</div>
+                	</c:if>
+                	<c:if test="${status.index != 0 }">
+                		<div class="carousel-item">
+                  		<img
+                  		  src="${pageContext.request.contextPath}/show?filePath=${file.saveFolder}&fileName=${file.changeName}"
+                  		  class="d-block w-100"
+                  		  alt="..."
+                  		/>
+                		</div>
+                	</c:if>
+                </c:forEach>
               </div>
               <button
                 class="carousel-control-prev"
@@ -102,6 +103,8 @@
                 ></span>
               </button>
             </div>
+		</c:if>
+
 
             <textarea
               style="font-size: x-large"
@@ -110,7 +113,7 @@
               placeholder="content"
               rows="15"
               readonly
-            ></textarea>
+            >${daily.content}</textarea>
           </div>
 
           <div class="row mt-4">

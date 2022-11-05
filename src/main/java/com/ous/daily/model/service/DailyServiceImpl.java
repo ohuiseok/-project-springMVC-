@@ -1,11 +1,19 @@
 package com.ous.daily.model.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ous.daily.model.Cert;
 import com.ous.daily.model.Diary;
@@ -17,14 +25,16 @@ import com.ous.daily.model.mapper.UserMapper;
 @Service
 public class DailyServiceImpl implements DailyService {
 
-	DiaryMapper diaryMapper;
-	UserMapper userMapper;
+	private DiaryMapper diaryMapper;
+	private UserMapper userMapper;
+	private ServletContext servletContext;
 
 	@Autowired
-	public DailyServiceImpl(DiaryMapper diaryMapper, UserMapper userMapper) {
+	public DailyServiceImpl(DiaryMapper diaryMapper, UserMapper userMapper, ServletContext servletContext) {
 		super();
 		this.diaryMapper = diaryMapper;
 		this.userMapper = userMapper;
+		this.servletContext = servletContext;
 	}
 
 	@Override
@@ -139,6 +149,36 @@ public class DailyServiceImpl implements DailyService {
 	public void addCert(Cert cert) throws SQLException {
 		// TODO Auto-generated method stub
 		userMapper.addCert(cert);
+	}
+
+	@Override
+	@Transactional
+	public void addArticle(Diary diary, MultipartFile[] upfile)
+			throws SQLException, IllegalStateException, IOException {
+		// TODO Auto-generated method stub
+		diaryMapper.addDiary(diary);
+		System.out.println("!!!!!!!!!" + upfile.length);
+		for (MultipartFile file : upfile) {
+			if (!file.isEmpty()) {
+				String realPath = servletContext.getRealPath("/upload");
+				String today = new SimpleDateFormat("yyMMdd").format(new Date());
+				String saveFolder = realPath + File.separator + today;
+				File folder = new File(saveFolder);
+				if (!folder.exists())
+					folder.mkdirs();
+
+				ImageFile imageFile = new ImageFile();
+				imageFile.setDiaryNo(diaryMapper.getLastNo());
+				imageFile.setOrgName(file.getOriginalFilename());
+				imageFile.setSaveFolder(today);
+				String saveFileName = UUID.randomUUID().toString()
+						+ file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+				imageFile.setChangeName(saveFileName);
+				file.transferTo(new File(folder, saveFileName));
+				System.out.println(imageFile);
+				diaryMapper.addFile(imageFile);
+			}
+		}
 	}
 
 }

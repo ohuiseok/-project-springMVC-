@@ -55,15 +55,16 @@
 		`day`=#{day}
 	</delete>
 	<insert id="addDiary" parameterType="Diary">
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			select max(`no`) from diary;
-		</selectKey>
 		insert into
 		diary
 		(`title`,`content`,`year`,`month`,`day`,`users_id`)
 		values(#{title},#{content},#{year},#{month},#{day},#{userId})
 	</insert>
-	<select id="getFile" parameterType="Diary">
+	<select id="getLastNo" resultType="long">
+		SELECT LAST_INSERT_ID()
+	</select>
+	
+	<select id="getFile" parameterType="Diary" resultMap="imageFile">
 		select *
 		from files
 		where
@@ -86,6 +87,6 @@
 	<insert id="addFile" parameterType="ImageFile">
 		insert into
 		files(`org_name`,`save_forder`,`change_name`,`diary_no`)
-		values(#{orgName},'#{saveFolder},#{changeName},#{diaryNo});
+		values(#{orgName},#{saveFolder},#{changeName},#{diaryNo});
 	</insert>
 </mapper>

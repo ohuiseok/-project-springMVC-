@@ -1,7 +1,10 @@
 package com.ous.daily.model.service;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ous.daily.model.Cert;
 import com.ous.daily.model.Diary;
@@ -42,5 +45,7 @@ public interface DailyService {
 	void deleteCert(String id) throws SQLException;
 
 	void addCert(Cert cert) throws SQLException;
+	
 
+	void addArticle(Diary diary,MultipartFile[] upfile)throws SQLException, IllegalStateException, IOException;
 }

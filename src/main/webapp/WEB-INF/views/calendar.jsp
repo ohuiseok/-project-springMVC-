@@ -30,16 +30,25 @@ a {
 
 	<div class="row">
 		<div class="col-2" style="text-align: center; font-size: xx-large">
-			&lt;</div>
+			<c:if test="${selectMonth == 1 }">
+				<a
+					href="${pageContext.request.contextPath}/calendar?year=${selectYear-1}&month=12">&lt;</a>
+			</c:if>
+			<c:if test="${selectMonth != 1 }">
+				<a
+					href="${pageContext.request.contextPath}/calendar?year=${selectYear}&month=${selectMonth-1}">&lt;</a>
+			</c:if>
+		</div>
 		<div class="col-4" style="text-align: right; font-size: xx-large">
 			<li style="list-style: none; text-align: center"
 				class="nav-item dropdown"><a class="nav-link show"
 				data-bs-toggle="dropdown" href="#" role="button"
-				aria-haspopup="true" aria-expanded="true">${year}년</a>
+				aria-haspopup="true" aria-expanded="true">${selectYear}년</a>
 				<div class="dropdown-menu" data-popper-placement="bottom-start"
 					style="text-align: right;">
 					<c:forEach var="i" begin="0" end="19">
-						<a style="text-align: right" class="dropdown-item" href="#">${year-i}</a>
+						<a style="text-align: right" class="dropdown-item"
+							href="${pageContext.request.contextPath}/calendar?year=${year-i}&month=${selectMonth}">${year-i}</a>
 					</c:forEach>
 				</div></li>
 		</div>
@@ -47,16 +56,25 @@ a {
 			<li style="list-style: none; text-align: center"
 				class="nav-item dropdown"><a class="nav-link show"
 				data-bs-toggle="dropdown" href="#" role="button"
-				aria-haspopup="true" aria-expanded="true">11월</a>
+				aria-haspopup="true" aria-expanded="true">${selectMonth}월</a>
 				<div class="dropdown-menu" data-popper-placement="bottom-start"
 					style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 46px);">
-					<a style="text-align: right" class="dropdown-item" href="#">10월</a>
-					<a style="text-align: right" class="dropdown-item" href="#">9월</a>
-					<a style="text-align: right" class="dropdown-item" href="#">8월</a>
+					<c:forEach var="i" begin="1" end="${month}">
+						<a style="text-align: right" class="dropdown-item"
+							href="${pageContext.request.contextPath}/calendar?year=${selectYear}&month=${i}">${i}</a>
+					</c:forEach>
 				</div></li>
 		</div>
 		<div class="col-2" style="text-align: center; font-size: xx-large">
-			&gt;</div>
+			<c:if test="${selectMonth == 12 }">
+				<a
+					href="${pageContext.request.contextPath}/calendar?year=${selectYear+1}&month=1">&gt;</a>
+			</c:if>
+			<c:if test="${selectMonth != 12 }">
+				<a
+					href="${pageContext.request.contextPath}/calendar?year=${selectYear}&month=${selectMonth+1}">&gt;</a>
+			</c:if>
+		</div>
 	</div>
 
 	<c:forEach var="diary" items="${diarys}" varStatus="status">
@@ -66,7 +84,8 @@ a {
 
 		<c:if test="${status.index % 7 == 0 || status.index % 7 == 6}">
 			<div id="${diary.day}" class="card bg-dark col click_event"
-				value="empty">
+				value="empty" month="${selectMonth}" year="${selectYear}"
+				day="${diary.day}">
 				<div class="card-body">
 					<h6 class="card-subtitle mb-2 text-mute"
 						style="font-size: xx-large">${diary.day}</h6>
@@ -77,7 +96,8 @@ a {
 			</div>
 		</c:if>
 		<c:if test="${status.index % 7 != 0 && status.index % 7 != 6}">
-			<div class="card col click_event">
+			<div class="card col click_event" month="${selectMonth}"
+				year="${selectYear}" day="${diary.day}">
 				<div class="card-body">
 					<h6 class="card-subtitle mb-2 text-muted"
 						style="font-size: xx-large">${diary.day}</h6>
@@ -92,17 +112,32 @@ a {
 	</c:forEach>
 
 
-	<form type="hidden"
-		action="${pageContext.request.contextPath}/calendar" method="Post"
-		hidden>
-		<input type="hidden" id="year" name="year" /> <input type="hidden"
-			id="month" name="month" /> <input type="hidden" id="day" name="day" />
-		<button type="submit" id="press" />
+	<form style="display: none" id="transfer"
+		action="${pageContext.request.contextPath}/calendar" method="POST" >
+		<input type="hidden" id="year" name="year" /> 
+		<input type="hidden" id="month" name="month" /> 
+		<input type="hidden" id="day" name="day" />
 	</form>
 	<script>
 		const text = "${msg}";
 		if (text != null && text != "null" && text != "") {
 			alert(text);
+		}
+
+		let elements = document.getElementsByClassName("click_event");
+		for (let i = 0; i < elements.length; i++) {
+			elements[i].addEventListener("click", function() {
+				let year = Number(elements[i].getAttribute("year"));
+				let month = Number(elements[i].getAttribute("month"));
+				let day = Number(elements[i].getAttribute("day"));
+				console.log(year);
+				console.log(month);
+				console.log(day);
+				document.getElementById("year").value = year;
+				document.getElementById("month").value = month;
+				document.getElementById("day").value = day;
+				document.getElementById("transfer").submit();
+			});
 		}
 	</script>
 

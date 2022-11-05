@@ -45,4 +45,6 @@ public interface DiaryMapper {
 	void deleteCert(String id);
 
 	void addCert(Cert cert);
+	
+	long getLastNo();
 }
