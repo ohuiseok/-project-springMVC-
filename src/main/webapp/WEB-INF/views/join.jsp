@@ -12,6 +12,12 @@
 	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
 	crossorigin="anonymous">
+	
+<style>
+a {
+	text-decoration-line: none;
+}
+</style>
 </head>
 <body>
 	<ol class="breadcrumb">

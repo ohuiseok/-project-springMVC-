@@ -12,6 +12,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -45,10 +46,10 @@ public class DailyController {
 	 * @Autowired MailService mailService;
 	 */
 	final int[] totalDay = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-	
+
 	DailyService dailyService;
 	private ServletContext servletContext;
-	
+
 	@Autowired
 	public DailyController(DailyService dailyService, ServletContext servletContext) {
 		super();
@@ -70,10 +71,11 @@ public class DailyController {
 				model.addAttribute("msg", "존재하지 않는 아이디입니다.");
 				return "login";
 			}
-			if (!storeInfo.getId().equals(user.getId()) || !storeInfo.getPass().equals(user.getPass())) {
+			if ( !BCrypt.checkpw(user.getPass(),storeInfo.getPass())) {
 				model.addAttribute("msg", "비밀번호가 다릅니다.");
 				return "login";
 			}
+			
 			HttpSession httpSession = request.getSession();
 			httpSession.setAttribute("login", user);
 
@@ -85,6 +87,12 @@ public class DailyController {
 		return "redirect:/calendar";
 	}
 
+	@GetMapping("/logout")
+	String logout(HttpServletRequest request) {
+		request.getSession().invalidate();
+		return "redirect:/";
+	}
+	
 	@GetMapping("/join")
 	String join() {
 
@@ -92,11 +100,14 @@ public class DailyController {
 	}
 
 	@PostMapping("/join")
-	String doJoin(User user) {
+	String doJoin(User user, Model model) {
 		try {
 			User cmpUser = dailyService.existUser(user.getId());
-			if (cmpUser != null)
-				return "redirect:/join";
+			if (cmpUser != null) {
+				model.addAttribute("msg","이미 존재하는 아이디 입니다.");
+				return "join";
+			}
+			user.setPass(BCrypt.hashpw(user.getPass(), BCrypt.gensalt()));
 			dailyService.addUser(user);
 
 		} catch (SQLException e) {
@@ -191,19 +202,19 @@ public class DailyController {
 
 	@GetMapping("/show")
 	@ResponseBody
-	public ResponseEntity<byte[]> getFile(String fileName,String filePath){	
-	    File file=new File(servletContext.getRealPath("/upload")+File.separatorChar +filePath,fileName);
-	    ResponseEntity<byte[]> result=null;
-	    try {
-	        HttpHeaders headers=new HttpHeaders();
-	        headers.add("Content-Type", Files.probeContentType(file.toPath()));
-	        result=new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file),headers,HttpStatus.OK );
-	    }catch (IOException e) {
-	        e.printStackTrace();
-	    }
-	    return result;
+	public ResponseEntity<byte[]> getFile(String fileName, String filePath) {
+		File file = new File(servletContext.getRealPath("/upload") + File.separatorChar + filePath, fileName);
+		ResponseEntity<byte[]> result = null;
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", Files.probeContentType(file.toPath()));
+			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
-	
+
 	@PostMapping("/calendar")
 	String postCalendar(Diary diary, Model model) {
 		if (diary.getDay() == 0)
@@ -216,7 +227,7 @@ public class DailyController {
 				return "register";
 			}
 			List<ImageFile> files = dailyService.getFile(daily);
-			
+
 			model.addAttribute("daily", daily);
 			model.addAttribute("files", files);
 			return "view";
@@ -229,9 +240,13 @@ public class DailyController {
 	}
 
 	@PostMapping("/write")
-	String store(@ModelAttribute Diary diary, @RequestParam MultipartFile[] upfile,HttpServletRequest request ) {
-		User user = (User)request.getSession().getAttribute("login");
+	String store(@ModelAttribute Diary diary, @RequestParam MultipartFile[] upfile, HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("login");
 		diary.setUserId(user.getId());
+		String content = diary.getContent().replaceAll("<", "&lt;");
+		content = content.replaceAll(">", "&gt;");
+		diary.setContent(content);// xxe 막기
+
 		try {
 			dailyService.addArticle(diary, upfile);
 		} catch (Exception e1) {
@@ -239,7 +254,7 @@ public class DailyController {
 			e1.printStackTrace();
 			return "redirect:/error";
 		}
-		
+
 		return "redirect:/calendar";
 	}
 

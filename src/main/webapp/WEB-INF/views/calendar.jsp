@@ -23,11 +23,13 @@ a {
 </head>
 <body>
 	<ol class="breadcrumb">
-		<a href="${pageContext.request.contextPath}/calendar"><li
-			class="breadcrumb-item active" style="font-size: xx-large">Home
-		</li> </a>
-	</ol>
-
+      <li class="breadcrumb-item active" style="font-size: xx-large">
+        <a href="${pageContext.request.contextPath}/calendar">Home&nbsp;&nbsp;&nbsp;</a>
+      </li>
+      <li class="breadcrumb-item active" style="font-size: xx-large">
+        <a href="${pageContext.request.contextPath}/logout">&nbsp;&nbsp;logout</a>
+      </li>
+    </ol>
 	<div class="row">
 		<div class="col-2" style="text-align: center; font-size: xx-large">
 			<c:if test="${selectMonth == 1 }">
@@ -83,7 +85,7 @@ a {
 		</c:if>
 
 		<c:if test="${status.index % 7 == 0 || status.index % 7 == 6}">
-			<div id="${diary.day}" class="card bg-dark col click_event"
+			<div id="${diary.day}" class="card bg-dark text-white col click_event"
 				value="empty" month="${selectMonth}" year="${selectYear}"
 				day="${diary.day}">
 				<div class="card-body">
@@ -110,8 +112,6 @@ a {
 			</div>
 		</c:if>
 	</c:forEach>
-
-
 	<form style="display: none" id="transfer"
 		action="${pageContext.request.contextPath}/calendar" method="POST" >
 		<input type="hidden" id="year" name="year" /> 

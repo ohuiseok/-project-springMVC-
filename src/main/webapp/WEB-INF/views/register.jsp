@@ -11,15 +11,22 @@
 	href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
 	crossorigin="anonymous">
+	
+<style>
+a {
+	text-decoration-line: none;
+}
+</style>
 </head>
 <body>
 	<ol class="breadcrumb">
-		<a href="${pageContext.request.contextPath}/calendar"
-			style="text-decoration-line: none">
-			<li class="breadcrumb-item active" style="font-size: xx-large">
-				Home</li>
-		</a>
-	</ol>
+      <li class="breadcrumb-item active" style="font-size: xx-large">
+        <a href="${pageContext.request.contextPath}/calendar">Home&nbsp;&nbsp;&nbsp;</a>
+      </li>
+      <li class="breadcrumb-item active" style="font-size: xx-large">
+        <a href="${pageContext.request.contextPath}/logout">&nbsp;&nbsp;logout</a>
+      </li>
+    </ol>
 
 	<div class="row">
 		<div class="col-2"></div>

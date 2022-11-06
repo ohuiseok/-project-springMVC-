@@ -12,6 +12,12 @@
 	integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R"
 	crossorigin="anonymous">
 	</head>
+	
+<style>
+a {
+	text-decoration-line: none;
+}
+</style>
   <body>
     <!-- https://bootswatch.com/sketchy/ -->
     <div class="container">
