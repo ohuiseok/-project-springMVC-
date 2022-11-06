@@ -23,6 +23,7 @@
 		from diary
 		where `year`=#{year}
 		and `month`=#{month}
+		and `users_id`=#{userId}
 		order by `day`
 	</select>
 	<select id="getDiaryByDay" parameterType="Diary"
@@ -32,6 +33,7 @@
 		where `year`=#{year}
 		and `month`=#{month}
 		and `day`=#{day}
+		and `users_id`=#{userId}
 	</select>
 	<update id="changeDiary" parameterType="Diary">
 		update diary

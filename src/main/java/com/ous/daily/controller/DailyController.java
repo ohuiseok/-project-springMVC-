@@ -120,7 +120,7 @@ public class DailyController {
 	}
 
 	@GetMapping("/calendar")
-	String calendar(Model model, @RequestParam(value = "year", required = false, defaultValue = "0") int year,
+	String calendar(HttpServletRequest request,Model model, @RequestParam(value = "year", required = false, defaultValue = "0") int year,
 			@RequestParam(value = "month", required = false, defaultValue = "0") int month) {
 		Diary diary = new Diary();
 		int curYear = Calendar.getInstance().get(Calendar.YEAR),
@@ -129,8 +129,10 @@ public class DailyController {
 			year = curYear;
 			month = curMonth;
 		}
+		User user = (User) request.getSession().getAttribute("login");
 		diary.setYear(year);// 선택한 연도로 가기
 		diary.setMonth(month);// 선택한 달로 가기
+		diary.setUserId(user.getId());
 		try {
 
 			List<Diary> diarys = dailyService.getDiaryByMonth(diary);// 선택한 다이어리 정보 가져오기
@@ -216,11 +218,13 @@ public class DailyController {
 	}
 
 	@PostMapping("/calendar")
-	String postCalendar(Diary diary, Model model) {
+	String postCalendar(HttpServletRequest request,Diary diary, Model model) {
 		if (diary.getDay() == 0)
 			return "redirect:/calendar";
 
 		try {
+			User user = (User) request.getSession().getAttribute("login");
+			diary.setUserId(user.getId());
 			Diary daily = dailyService.getDiaryByDay(diary);
 			if (daily == null) {
 				model.addAttribute("diary", diary);
