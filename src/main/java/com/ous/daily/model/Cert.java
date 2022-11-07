@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Cert {
-	String id;
-	String certif;
+	private String id;
+	private String certif;
 }

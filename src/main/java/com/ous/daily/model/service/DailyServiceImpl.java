@@ -52,8 +52,9 @@ public class DailyServiceImpl implements DailyService {
 	@Override
 	@Transactional
 	public void changeDiary(Diary diary) throws SQLException {
-		// TODO Auto-generated method stub
-		diaryMapper.changeDiary(diary);
+		//해당 날짜 diary변경 
+		//해당 데이터 변경...
+		//diaryMapper.changeDiary(diary);
 	}
 
 	@Override

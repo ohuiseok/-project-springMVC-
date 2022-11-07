@@ -31,9 +31,10 @@
 		class="com.ous.daily.interceptor.Confirm" />
 	<interceptors>
 		<interceptor>
-			<mapping path="/calendar" />
-			<mapping path="/write"/>
-			<mapping path="/show"/>
+			<mapping path="/*" />
+			<exclude-mapping path="/login"/>
+			<exclude-mapping path="/join"/>
+			<exclude-mapping path="/"/>
 			<beans:ref bean="confirm" />
 		</interceptor>
 	</interceptors>

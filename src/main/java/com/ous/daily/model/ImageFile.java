@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class ImageFile {
-	String orgName;
-	String saveFolder;
-	String changeName;
-	long diaryNo;
+	private String orgName;
+	private String saveFolder;
+	private String changeName;
+	private long diaryNo;
 }

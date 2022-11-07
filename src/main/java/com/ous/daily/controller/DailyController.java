@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ous.daily.model.Diary;
+import com.ous.daily.model.FileList;
 import com.ous.daily.model.ImageFile;
 import com.ous.daily.model.User;
 import com.ous.daily.model.service.DailyService;
@@ -262,6 +263,50 @@ public class DailyController {
 		return "redirect:/calendar";
 	}
 
+	@PostMapping("/modify")//page 이동
+	String modify(Diary diary,Model model,HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("login");
+		diary.setUserId(user.getId());
+		List<ImageFile> files=null;
+		Diary daily=null;
+		try {
+			daily = dailyService.getDiaryByDay(diary);
+			files = dailyService.getFile(daily);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "redirect:/error";
+		}
+		model.addAttribute("daily", daily);
+		model.addAttribute("files", files);
+		
+		return "modify";
+	}
+	
+	@PostMapping("/store")//page 이동
+	String store(Diary diary,FileList fileList, Model model,HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("login");
+		diary.setUserId(user.getId());
+		List<ImageFile> files=null;
+		Diary daily=null;
+		
+		try {
+			dailyService.changeDiary(diary);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(fileList!=null) {
+			for(ImageFile file : fileList.getImageFiles()) {
+				if(!file.getOrgName().equals("null"))
+					files.add(file);
+			}
+		}
+
+		model.addAttribute("daily", daily);
+		model.addAttribute("files", files);
+		return "redirect:/";
+	}
 	/*
 	 * @GetMapping("/e-mail/{email}") void transferEmail(@PathVariable String email)
 	 * { mailService.sendEmail("dkdlelxoa@naver.com", "noreply@diary.com",

@@ -30,8 +30,7 @@ a {
 
 	<div class="row">
 		<div class="col-2"></div>
-		<form class="col-8" action="#" method="post"
-			enctype="multipart/form-data">
+		<form class="col-8" action="${pageContext.request.contextPath}/modify" method="post">
 			<fieldset>
 				<legend>${daily.year}.${daily.month}.${daily.day} 일기장</legend>
 				<div class="form-group">
@@ -39,6 +38,7 @@ a {
 						for="inputLarge">제목</label> <input
 						class="form-control form-control-lg" type="text"
 						placeholder="title" id="inputLarge" readonly
+						name="title"
 						value="${daily.title}" />
 				</div>
 				<div class="form-group">
@@ -78,10 +78,12 @@ a {
 					</c:if>
 
 
-					<textarea style="font-size: x-large" class="form-control"
+					<textarea style="font-size: x-large" class="form-control" name="content"
 						id="exampleTextarea" placeholder="content" rows="15" readonly>${daily.content}</textarea>
 				</div>
-
+				<input type="hidden" name="year" value="${daily.year}" />
+				<input type="hidden" name="month" value="${daily.month}" />
+				<input type="hidden" name="day" value="${daily.day}" />
 				<div class="row mt-4">
 					<div class="col-8"></div>
 					<button type="submit" class="btn btn-primary col-2">수정</button>
