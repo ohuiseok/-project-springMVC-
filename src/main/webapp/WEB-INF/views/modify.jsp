@@ -20,7 +20,7 @@
 <body>
 	<div class="row">
 		<div class="col-2"></div>
-		<form class="col-8" action="${pageContext.request.contextPath}/store" method="post"
+		<form class="col-8" action="${pageContext.request.contextPath}/change" method="post"
 			enctype="multipart/form-data">
 			<fieldset>
 				<legend>${daily.year}.${daily.month}.${daily.day} 일기장</legend>
@@ -59,7 +59,7 @@
 						</button>
 						${file.orgName}
 					</div>
-					<input type="hidden" id="imageFiles[${status.index}].orgName" name="imageFiles[${status.index}].orgName" value="${file.orgName}" /> 
+					<input type="hidden" id="imageFiles[${status.index}].changeName" name="imageFiles[${status.index}].changeName" value="${file.changeName}" /> 
 					</c:forEach>
 					
 				</div>
@@ -85,7 +85,6 @@
       e.addEventListener("click", function () {
         let index = e.getAttribute("index");
         let selectElAttr ="imageFiles["+index+"].orgName";
-        console.log(selectElAttr);
         document.getElementById(selectElAttr).setAttribute("name", "");
         
         });

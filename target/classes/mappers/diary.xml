@@ -80,7 +80,7 @@
 		`change_name`=#{changeName}
 		where diary_no = #{diaryNo}
 	</update>
-	<delete id="deleteFile" parameterType="String">
+	<delete id="deleteFile" parameterType="Long">
 		delete
 		from files
 		where

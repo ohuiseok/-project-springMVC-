@@ -282,29 +282,20 @@ public class DailyController {
 		return "modify";
 	}
 	
-	@PostMapping("/store")//page 이동
-	String store(Diary diary,FileList fileList, Model model,HttpServletRequest request) {
+	@PostMapping("/change")
+	String store(Diary diary,FileList fileList, Model model, @RequestParam MultipartFile[] upfile,HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("login");
 		diary.setUserId(user.getId());
-		List<ImageFile> files=null;
-		Diary daily=null;
 		
 		try {
-			dailyService.changeDiary(diary);
-		} catch (SQLException e) {
+			dailyService.changeDiary(diary,fileList,upfile);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return "redirect:/error";
 		}
 		
-		if(fileList!=null) {
-			for(ImageFile file : fileList.getImageFiles()) {
-				if(!file.getOrgName().equals("null"))
-					files.add(file);
-			}
-		}
 
-		model.addAttribute("daily", daily);
-		model.addAttribute("files", files);
 		return "redirect:/";
 	}
 	/*

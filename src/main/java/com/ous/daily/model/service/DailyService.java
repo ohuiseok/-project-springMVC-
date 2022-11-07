@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ous.daily.model.Cert;
 import com.ous.daily.model.Diary;
+import com.ous.daily.model.FileList;
 import com.ous.daily.model.ImageFile;
 import com.ous.daily.model.User;
 
@@ -16,7 +17,7 @@ public interface DailyService {
 
 	Diary getDiaryByDay(Diary diary) throws SQLException;// String year, String month, String day
 
-	void changeDiary(Diary diary) throws SQLException;
+	void changeDiary(Diary diary,FileList fileList,MultipartFile[] upfile) throws SQLException, IllegalStateException, IOException;
 
 	void deleteDiary(Diary diary) throws SQLException;// String year, String month, String day
 
