@@ -1,0 +1,6 @@
+document.addEventListener("scroll", function () {
+        var currentScrollValue = document.documentElement.scrollTop;
+        console.log("currentScrollValue is " + currentScrollValue);
+        console.log(document.documentElement.scrollHeight);
+        console.log(currentScrollValue + document.documentElement.clientHeight);
+      });

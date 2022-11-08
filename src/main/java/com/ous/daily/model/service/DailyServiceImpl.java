@@ -245,4 +245,10 @@ public class DailyServiceImpl implements DailyService {
 		}
 	}
 
+	@Override
+	public List<Diary> getAllDiary(String userId) throws SQLException {
+		// TODO Auto-generated method stub
+		return diaryMapper.getAllDiary(userId);
+	}
+
 }

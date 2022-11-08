@@ -47,6 +47,7 @@ public interface DailyService {
 
 	void addCert(Cert cert) throws SQLException;
 	
+	List<Diary> getAllDiary(String userId)throws SQLException;
 
 	void addArticle(Diary diary,MultipartFile[] upfile)throws SQLException, IllegalStateException, IOException;
 }

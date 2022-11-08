@@ -27,7 +27,10 @@ a {
         <a href="${pageContext.request.contextPath}/calendar">Home&nbsp;&nbsp;&nbsp;</a>
       </li>
       <li class="breadcrumb-item active" style="font-size: xx-large">
-        <a href="${pageContext.request.contextPath}/logout">&nbsp;&nbsp;logout</a>
+        <a href="${pageContext.request.contextPath}/logout">&nbsp;&nbsp;logout&nbsp;&nbsp;&nbsp;</a>
+      </li>
+      <li class="breadcrumb-item active" style="font-size: xx-large">
+        <a href="${pageContext.request.contextPath}/list">&nbsp;&nbsp;list&nbsp;&nbsp;&nbsp;</a>
       </li>
     </ol>
 	<div class="row">

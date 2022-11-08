@@ -35,6 +35,13 @@
 		and `day`=#{day}
 		and `users_id`=#{userId}
 	</select>
+	<select id="getAllDiary" parameterType="String" resultMap="dialy">
+		select *
+		from diary d
+		where `users_id`=#{userId}
+		order by `year` desc, `month` desc, `day` desc;
+	</select>
+	
 	<update id="changeDiary" parameterType="Diary">
 		update diary
 		set

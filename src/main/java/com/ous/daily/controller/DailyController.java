@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,9 +60,12 @@ public class DailyController {
 	}
 
 	@GetMapping("/")
-	String index() {
-
-		return "login";
+	String index(HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("login");
+		if (user == null)
+			return "login";
+		else
+			return "redirect:/calendar";
 	}
 
 	@PostMapping("/login")
@@ -217,6 +221,12 @@ public class DailyController {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	@GetMapping("/list")
+	String moveList() {
+
+		return "list";
 	}
 
 	@PostMapping("/calendar")

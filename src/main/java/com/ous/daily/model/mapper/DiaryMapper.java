@@ -47,4 +47,6 @@ public interface DiaryMapper {
 	void addCert(Cert cert);
 	
 	long getLastNo();
+	
+	List<Diary> getAllDiary(String userId)throws SQLException;
 }
