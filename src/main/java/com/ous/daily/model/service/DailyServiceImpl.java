@@ -53,45 +53,41 @@ public class DailyServiceImpl implements DailyService {
 
 	@Override
 	@Transactional
-	public void changeDiary(Diary diary,FileList fileList,MultipartFile[] upfile) throws SQLException, IllegalStateException, IOException {
+	public void changeDiary(Diary diary, FileList fileList, MultipartFile[] upfile)
+			throws SQLException, IllegalStateException, IOException {
 //		fileList.getImageFiles()
 		List<ImageFile> storeFiles = diaryMapper.getFile(diary);
 		List<ImageFile> remainFiles = fileList.getImageFiles();
 		List<ImageFile> deleteFiles = new ArrayList<ImageFile>();
-		
-		for(ImageFile storeFile : storeFiles) {
-			boolean same = false;
-			for(ImageFile remainFile : remainFiles) {
-				if(remainFile.getChangeName().equals(storeFile.getChangeName())) {
-					same = true;
-					remainFile.setChangeName(storeFile.getChangeName());
-					remainFile.setDiaryNo(storeFile.getDiaryNo());
-					remainFile.setOrgName(storeFile.getOrgName());
-					remainFile.setSaveFolder(storeFile.getSaveFolder());
-				}
-			}
-			if(!same) { //이번에 선택한 파일들 중에, 저장된 파일명과 같은 게 없으면 삭제하기
-				deleteFiles.add(storeFile);
-			}
-		}
-		
-		for(ImageFile deleteFile : deleteFiles) {
-			String realPath = servletContext.getRealPath("/upload")+ File.separator + deleteFile.getSaveFolder()
-			+File.separator+deleteFile.getChangeName();
 
-	        File file = new File(realPath);
-	        file.delete();
-	        
+		for (ImageFile storeFile : storeFiles) {
+			boolean same = false;
+
+			if (remainFiles != null)
+				for (ImageFile remainFile : remainFiles) {
+					if (remainFile != null && remainFile.getChangeName().equals(storeFile.getChangeName())) {
+						same = true;
+						remainFile.setChangeName(storeFile.getChangeName());
+						remainFile.setDiaryNo(storeFile.getDiaryNo());
+						remainFile.setOrgName(storeFile.getOrgName());
+						remainFile.setSaveFolder(storeFile.getSaveFolder());
+					}
+				}
+
+			if (!same) { // 이번에 선택한 파일들 중에, 저장된 파일명과 같은 게 없으면 삭제하기
+				deleteFiles.add(storeFile);
+				System.out.println(storeFile);
+			}
 		}
-		
-		
-		diaryMapper.changeDiary(diary);//다이어리 데이터 수정
-		
-		diaryMapper.deleteFile(diary.getNo());//원래있던 거 다 삭제
-		for(ImageFile remainFile : remainFiles) {//다시 있던 거는 저장
-			diaryMapper.addFile(remainFile);
-		}
-		for (MultipartFile file : upfile) {//추가 기입한 파일 저장
+
+		diaryMapper.changeDiary(diary);// 다이어리 데이터 수정
+
+		diaryMapper.deleteFile(diary.getNo());// 원래있던 거 다 삭제
+		if (remainFiles != null)
+			for (ImageFile remainFile : remainFiles) {// 다시 있던 거는 저장
+				diaryMapper.addFile(remainFile);
+			}
+		for (MultipartFile file : upfile) {// 추가 기입한 파일 저장
 			if (!file.isEmpty()) {
 				String realPath = servletContext.getRealPath("/upload");
 				String today = new SimpleDateFormat("yyMMdd").format(new Date());
@@ -112,11 +108,16 @@ public class DailyServiceImpl implements DailyService {
 				diaryMapper.addFile(imageFile);
 			}
 		}
-		
-		
-		//해당 날짜 diary변경 
-		//해당 데이터 변경...
-		//diaryMapper.changeDiary(diary);
+
+		for (ImageFile deleteFile : deleteFiles) {// 실제로 파일 삭제
+			String realPath = servletContext.getRealPath("/upload") + File.separator + deleteFile.getSaveFolder()
+					+ File.separator + deleteFile.getChangeName();
+
+			File file = new File(realPath);
+			file.delete();
+
+		}
+
 	}
 
 	@Override

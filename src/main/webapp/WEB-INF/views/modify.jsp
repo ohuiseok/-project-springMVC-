@@ -71,7 +71,7 @@
 						type="hidden" name="month" value="${daily.month}" /> <input
 						type="hidden" name="day" value="${daily.day}" />
 					<button type="submit" class="btn btn-primary col-2">저장</button>
-					<button class="btn btn-primary col-2">취소</button>
+					<button type="button" id="cancel" class="btn btn-primary col-2">취소</button>
 				</div>
 			</fieldset>
 		</form>
@@ -84,11 +84,14 @@
       let e = el.item(i);
       e.addEventListener("click", function () {
         let index = e.getAttribute("index");
-        let selectElAttr ="imageFiles["+index+"].orgName";
+        let selectElAttr ="imageFiles["+index+"].changeName";
         document.getElementById(selectElAttr).setAttribute("name", "");
         
         });
     }
+	document.getElementById("cancel").addEventListener("click",function() {
+		location.href = "${pageContext.request.contextPath}/cancel";
+	});
     </script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"

@@ -72,11 +72,11 @@ public class DailyController {
 				model.addAttribute("msg", "존재하지 않는 아이디입니다.");
 				return "login";
 			}
-			if ( !BCrypt.checkpw(user.getPass(),storeInfo.getPass())) {
+			if (!BCrypt.checkpw(user.getPass(), storeInfo.getPass())) {
 				model.addAttribute("msg", "비밀번호가 다릅니다.");
 				return "login";
 			}
-			
+
 			HttpSession httpSession = request.getSession();
 			httpSession.setAttribute("login", user);
 
@@ -93,7 +93,7 @@ public class DailyController {
 		request.getSession().invalidate();
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("/join")
 	String join() {
 
@@ -105,7 +105,7 @@ public class DailyController {
 		try {
 			User cmpUser = dailyService.existUser(user.getId());
 			if (cmpUser != null) {
-				model.addAttribute("msg","이미 존재하는 아이디 입니다.");
+				model.addAttribute("msg", "이미 존재하는 아이디 입니다.");
 				return "join";
 			}
 			user.setPass(BCrypt.hashpw(user.getPass(), BCrypt.gensalt()));
@@ -121,7 +121,8 @@ public class DailyController {
 	}
 
 	@GetMapping("/calendar")
-	String calendar(HttpServletRequest request,Model model, @RequestParam(value = "year", required = false, defaultValue = "0") int year,
+	String calendar(HttpServletRequest request, Model model,
+			@RequestParam(value = "year", required = false, defaultValue = "0") int year,
 			@RequestParam(value = "month", required = false, defaultValue = "0") int month) {
 		Diary diary = new Diary();
 		int curYear = Calendar.getInstance().get(Calendar.YEAR),
@@ -219,7 +220,7 @@ public class DailyController {
 	}
 
 	@PostMapping("/calendar")
-	String postCalendar(HttpServletRequest request,Diary diary, Model model) {
+	String postCalendar(HttpServletRequest request, Diary diary, Model model) {
 		if (diary.getDay() == 0)
 			return "redirect:/calendar";
 
@@ -263,12 +264,12 @@ public class DailyController {
 		return "redirect:/calendar";
 	}
 
-	@PostMapping("/modify")//page 이동
-	String modify(Diary diary,Model model,HttpServletRequest request) {
+	@PostMapping("/modify") // page 이동
+	String modify(Diary diary, Model model, HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("login");
 		diary.setUserId(user.getId());
-		List<ImageFile> files=null;
-		Diary daily=null;
+		List<ImageFile> files = null;
+		Diary daily = null;
 		try {
 			daily = dailyService.getDiaryByDay(diary);
 			files = dailyService.getFile(daily);
@@ -278,25 +279,34 @@ public class DailyController {
 		}
 		model.addAttribute("daily", daily);
 		model.addAttribute("files", files);
-		
+
 		return "modify";
 	}
-	
+
 	@PostMapping("/change")
-	String store(Diary diary,FileList fileList, Model model, @RequestParam MultipartFile[] upfile,HttpServletRequest request) {
+	String store(Diary diary, FileList fileList, Model model, @RequestParam MultipartFile[] upfile,
+			HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("login");
 		diary.setUserId(user.getId());
-		
+
 		try {
-			dailyService.changeDiary(diary,fileList,upfile);
+			dailyService.changeDiary(diary, fileList, upfile);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "redirect:/error";
 		}
-		
 
-		return "redirect:/";
+		return "redirect:/calendar";
+	}
+
+	@GetMapping("/cancel")
+	private String moveBeforePage(HttpServletRequest request) {
+		if (request.getHeader("Referer") != null) {
+			return "redirect:" + request.getHeader("Referer");
+		} else {
+			return "redirect:/";
+		}
 	}
 	/*
 	 * @GetMapping("/e-mail/{email}") void transferEmail(@PathVariable String email)

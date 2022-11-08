@@ -57,7 +57,7 @@ a {
 					<input type="hidden" id="month" name="month" value="${diary.month}" />
 					<input type="hidden" id="day" name="day" value="${diary.day}" />
 					<button type="submit" class="btn btn-primary col-2">저장</button>
-					<button id="cancel" class="btn btn-primary col-2">취소</button>
+					<button type="button" id="cancel" class="btn btn-primary col-2">취소</button>
 				</div>
 			</fieldset>
 		</form>
@@ -69,6 +69,9 @@ a {
 		if (text != null && text != "null" && text != "") {
 			alert(text);
 		}
+		document.getElementById("cancel").addEventListener("click",function() {
+			location.href = "${pageContext.request.contextPath}/cancel";
+		});
 	</script>
 </body>
 </html>

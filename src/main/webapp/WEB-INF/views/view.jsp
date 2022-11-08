@@ -87,7 +87,7 @@ a {
 				<div class="row mt-4">
 					<div class="col-8"></div>
 					<button type="submit" class="btn btn-primary col-2">수정</button>
-					<button class="btn btn-primary col-2">취소</button>
+					<button type="button" id="cancel" class="btn btn-primary col-2">취소</button>
 				</div>
 			</fieldset>
 		</form>
@@ -103,6 +103,9 @@ a {
 		if (text != null && text != "null" && text != "") {
 			alert(text);
 		}
+		document.getElementById("cancel").addEventListener("click",function() {
+			location.href = "${pageContext.request.contextPath}/cancel";
+		});
 	</script>
 </body>
 </html>
